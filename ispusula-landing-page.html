@@ -1,0 +1,1619 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İşPusula — Ajanslar İçin İş Takip Platformu</title>
+    <meta name="description" content="İşPusula ile tekliften sevkiyata tüm iş süreçlerinizi tek platformda yönetin. 8 departman, sınırsız iş emri, anlık maliyet takibi.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* =========== RESET & BASE =========== */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --primary: #1e3a6f;
+            --primary-light: #3f6ad8;
+            --primary-dark: #142b52;
+            --secondary: #f5a623;
+            --secondary-light: #f7b924;
+            --secondary-dark: #e0901a;
+            --success: #2ecc71;
+            --danger: #e74c3c;
+            --accent: #e74c3c;
+            --bg: #f8f9fb;
+            --bg-card: #ffffff;
+            --text: #495057;
+            --text-dark: #212529;
+            --text-light: #6c757d;
+            --border: #eef0f4;
+            --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
+            --shadow-lg: 0 10px 40px rgba(0,0,0,0.1);
+            --radius: 12px;
+            --radius-sm: 8px;
+            --transition: all 0.3s ease;
+        }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--text-dark);
+            line-height: 1.2;
+        }
+        a { text-decoration: none; color: var(--primary-light); transition: var(--transition); }
+        a:hover { color: var(--primary); }
+        img { max-width: 100%; height: auto; }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* =========== BUTTONS =========== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 32px;
+            border-radius: var(--radius-sm);
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            text-decoration: none;
+        }
+        .btn-primary {
+            background: var(--secondary);
+            color: #fff;
+            box-shadow: 0 4px 14px rgba(245, 166, 35, 0.35);
+        }
+        .btn-primary:hover {
+            background: var(--secondary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(245, 166, 35, 0.45);
+            color: #fff;
+        }
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+        .btn-outline:hover {
+            background: var(--primary);
+            color: #fff;
+            transform: translateY(-2px);
+        }
+        .btn-white {
+            background: #fff;
+            color: var(--primary);
+        }
+        .btn-white:hover {
+            background: var(--bg);
+            transform: translateY(-2px);
+        }
+
+        /* =========== NAVBAR =========== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            padding: 0 20px;
+            transition: var(--transition);
+        }
+        .navbar .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 72px;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 900;
+            font-size: 26px;
+            color: var(--primary);
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+        .logo-icon {
+            display: flex;
+            align-items: flex-end;
+            gap: 4px;
+            height: 34px;
+        }
+        .logo-icon .bar {
+            width: 9px;
+            border-radius: 4px 4px 0 0;
+            transition: var(--transition);
+        }
+        .logo-icon .bar:nth-child(1) { height: 16px; background: var(--primary); }
+        .logo-icon .bar:nth-child(2) { height: 24px; background: var(--primary-light); }
+        .logo-icon .bar:nth-child(3) { height: 30px; background: var(--secondary); }
+        .logo-icon .bar:nth-child(4) { height: 22px; background: var(--success); }
+        .logo .brand { color: var(--primary); }
+        .logo .dot { color: var(--secondary); font-weight: 900; }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+            list-style: none;
+        }
+        .nav-links a {
+            color: var(--text);
+            font-weight: 500;
+            font-size: 15px;
+        }
+        .nav-links a:hover { color: var(--primary); }
+        .nav-links .btn { padding: 10px 24px; font-size: 14px; }
+
+        .mobile-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 4px;
+        }
+        .mobile-toggle span {
+            width: 28px;
+            height: 3px;
+            background: var(--primary);
+            border-radius: 2px;
+            transition: var(--transition);
+        }
+
+        /* =========== HERO =========== */
+        .hero {
+            padding: 160px 0 100px;
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 50%, var(--primary-light) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.03);
+            pointer-events: none;
+        }
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -10%;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            background: rgba(245, 166, 35, 0.05);
+            pointer-events: none;
+        }
+        .hero .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+        .hero-content h1 {
+            font-size: 48px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 20px;
+            line-height: 1.15;
+        }
+        .hero-content h1 span {
+            background: linear-gradient(135deg, var(--secondary), var(--secondary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero-content p {
+            font-size: 18px;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 32px;
+            max-width: 520px;
+        }
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        .hero-visual {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .hero-card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: var(--radius);
+            padding: 24px;
+            width: 100%;
+            max-width: 500px;
+        }
+        .hero-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .hero-card-header h3 {
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .hero-card-header .badge {
+            background: var(--secondary);
+            color: #fff;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+        .hero-stat {
+            background: rgba(255,255,255,0.08);
+            border-radius: 8px;
+            padding: 12px 8px;
+            text-align: center;
+        }
+        .hero-stat .number {
+            font-family: 'Inter', sans-serif;
+            font-size: 22px;
+            font-weight: 700;
+            color: #fff;
+            display: block;
+        }
+        .hero-stat .label {
+            font-size: 11px;
+            color: rgba(255,255,255,0.7);
+        }
+        .hero-charts {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        .hero-chart {
+            background: rgba(255,255,255,0.06);
+            border-radius: 8px;
+            padding: 12px;
+        }
+        .hero-chart .chart-title {
+            font-size: 11px;
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .hero-chart .bar-chart {
+            display: flex;
+            align-items: flex-end;
+            gap: 4px;
+            height: 50px;
+        }
+        .hero-chart .bar-chart .bar {
+            flex: 1;
+            border-radius: 3px 3px 0 0;
+            min-height: 4px;
+            transition: var(--transition);
+        }
+        .hero-chart .bar-chart .bar.b1 { background: var(--primary-light); }
+        .hero-chart .bar-chart .bar.b2 { background: var(--secondary); }
+        .hero-chart .bar-chart .bar.b3 { background: var(--success); }
+        .hero-chart .bar-chart .bar.b4 { background: #9b59b6; }
+        .hero-chart .bar-chart .bar.b5 { background: var(--secondary-light); }
+        .hero-chart .donut-chart {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+        .hero-chart .donut-chart canvas {
+            width: 60px;
+            height: 60px;
+        }
+        .hero-chart .donut-chart .legend {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .hero-chart .donut-chart .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            color: rgba(255,255,255,0.7);
+        }
+        .hero-chart .donut-chart .legend-item .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+        .hero-mini-chart {
+            display: flex;
+            align-items: flex-end;
+            gap: 4px;
+            height: 40px;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+        }
+        .hero-mini-chart .bar {
+            flex: 1;
+            border-radius: 3px 3px 0 0;
+            opacity: 0.5;
+            transition: var(--transition);
+            min-height: 3px;
+        }
+        .hero-mini-chart .bar:nth-child(1) { height: 35%; background: var(--primary-light); }
+        .hero-mini-chart .bar:nth-child(2) { height: 55%; background: var(--secondary); }
+        .hero-mini-chart .bar:nth-child(3) { height: 75%; background: var(--success); }
+        .hero-mini-chart .bar:nth-child(4) { height: 45%; background: var(--primary-light); }
+        .hero-mini-chart .bar:nth-child(5) { height: 65%; background: var(--secondary); }
+        .hero-mini-chart .bar:nth-child(6) { height: 90%; opacity: 1; background: var(--success); }
+        .hero-mini-chart .bar:nth-child(7) { height: 40%; background: var(--primary-light); }
+        .hero-mini-chart .label {
+            font-size: 9px;
+            color: rgba(255,255,255,0.4);
+            text-align: center;
+        }
+
+        /* =========== SECTION HEADERS =========== */
+        .section-header {
+            text-align: center;
+            max-width: 750px;
+            margin: 0 auto 60px;
+        }
+        .section-header h2 {
+            font-size: 42px;
+            font-weight: 800;
+            margin-bottom: 18px;
+            letter-spacing: -0.5px;
+        }
+        .section-header h2 .highlight-blue { color: var(--primary-light); }
+        .section-header h2 .highlight-orange { color: var(--secondary); }
+        .section-header h2 .highlight-green { color: var(--success); }
+        .section-header h2 .highlight-purple { color: #9b59b6; }
+        .section-header h2 .highlight-red { color: var(--accent); }
+        .section-header p {
+            font-size: 19px;
+            color: var(--text-light);
+            line-height: 1.7;
+        }
+
+        /* =========== STATS BANNER =========== */
+        .stats-banner {
+            padding: 60px 0;
+            background: #fff;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            text-align: center;
+        }
+        .stat-item .number {
+            font-family: 'Inter', sans-serif;
+            font-size: 40px;
+            font-weight: 800;
+            color: var(--primary);
+            display: block;
+        }
+        .stat-item .label {
+            font-size: 15px;
+            color: var(--text-light);
+            margin-top: 4px;
+        }
+
+        /* =========== FEATURES =========== */
+        .features {
+            padding: 100px 0;
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+        .feature-card {
+                    border-radius: var(--radius);
+                    padding: 0;
+                    transition: var(--transition);
+                    cursor: pointer;
+                    overflow: hidden;
+            position: relative;
+        }
+        .feature-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-lg);
+        }
+        .feature-card .card-top {
+            padding: 18px 24px 10px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .feature-card .card-top .feature-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+            background: rgba(255,255,255,0.2);
+        }
+        .feature-card .card-top h3 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #fff;
+            margin: 0;
+            line-height: 1.2;
+        }
+        .feature-card .card-bottom {
+            padding: 14px 24px 22px;
+            background: rgba(255,255,255,0.95);
+        }
+        .feature-card .card-bottom p {
+            font-size: 15px;
+            color: var(--text);
+            line-height: 1.7;
+        }
+        /* Soft gradient backgrounds for each card */
+        .feature-card.c1 .card-top { background: linear-gradient(135deg, #4a6fa5, #7b9fd4); }
+        .feature-card.c2 .card-top { background: linear-gradient(135deg, #d4a056, #e8be7a); }
+        .feature-card.c3 .card-top { background: linear-gradient(135deg, #5bb89a, #8ed4b8); }
+        .feature-card.c4 .card-top { background: linear-gradient(135deg, #9b7bb5, #bfa3d4); }
+        .feature-card.c5 .card-top { background: linear-gradient(135deg, #c96a5a, #e08d7e); }
+        .feature-card.c6 .card-top { background: linear-gradient(135deg, #5baaa0, #82c9c0); }
+        .feature-card.c7 .card-top { background: linear-gradient(135deg, #6b7b8d, #95a5b5); }
+        .feature-card.c8 .card-top { background: linear-gradient(135deg, #c98a4a, #e0aa6e); }
+        .feature-card.c9 .card-top { background: linear-gradient(135deg, #5a8ab5, #82add4); }
+        .feature-card.c10 .card-top { background: linear-gradient(135deg, #5aad7a, #82cf9e); }
+        .feature-card.c11 .card-top { background: linear-gradient(135deg, #9b7bc0, #bba3d9); }
+        .feature-card.c12 .card-top { background: linear-gradient(135deg, #c96a7a, #e08ea0); }
+
+        /* =========== DEPARTMENTS =========== */
+        .departments {
+            padding: 80px 0;
+            background: #fff;
+        }
+        .dept-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+        .dept-card {
+                    text-align: center;
+                    padding: 24px 16px;
+                    border-radius: var(--radius-sm);
+                    background: var(--bg);
+                    border: 1px solid var(--border);
+                    transition: var(--transition);
+                    cursor: pointer;
+                }
+        .dept-card:hover {
+            background: var(--primary);
+            color: #fff;
+            transform: scale(1.05);
+        }
+        .dept-card:hover .dept-name { color: #fff; }
+        .dept-icon {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        .dept-name {
+            font-weight: 800;
+            font-size: 16px;
+            color: var(--text-dark);
+            transition: var(--transition);
+            letter-spacing: -0.3px;
+        }
+
+        /* =========== PRICING =========== */
+        .pricing {
+            padding: 100px 0;
+        }
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            align-items: start;
+        }
+        .pricing-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 0;
+            text-align: center;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        .pricing-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+        .pricing-card .pricing-header {
+            padding: 32px 32px 0;
+        }
+        .pricing-card .pricing-header h3 {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 4px;
+            letter-spacing: -0.3px;
+        }
+        .pricing-card .pricing-header h3.p-name-1 { color: var(--primary); }
+        .pricing-card .pricing-header h3.p-name-2 { color: var(--secondary); }
+        .pricing-card .pricing-header h3.p-name-3 { color: var(--accent); }
+        .pricing-card .subtitle {
+            font-size: 14px;
+            color: var(--text-light);
+            margin-bottom: 20px;
+        }
+        .pricing-card .price {
+            font-family: 'Inter', sans-serif;
+            font-size: 52px;
+            font-weight: 900;
+            color: var(--primary);
+            line-height: 1;
+        }
+        .pricing-card .price span {
+            font-size: 16px;
+            font-weight: 400;
+            color: var(--text-light);
+        }
+        .pricing-card .price-row {
+            padding: 20px 32px;
+            border-bottom: 1px solid var(--border);
+        }
+        .pricing-card .features-list {
+            list-style: none;
+            margin: 0;
+            padding: 20px 32px;
+            text-align: left;
+        }
+        .pricing-card .features-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .pricing-card .features-list li::before {
+            content: '✓';
+            color: var(--success);
+            font-weight: 700;
+        }
+        .pricing-card .features-list li:last-child { border-bottom: none; }
+        .pricing-card .pricing-footer {
+            padding: 20px 32px 32px;
+        }
+        .pricing-card .pricing-footer .btn { width: 100%; justify-content: center; }
+
+        .pricing-card.featured {
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 2px var(--secondary), var(--shadow-lg);
+            transform: scale(1.05);
+        }
+        .pricing-card.featured:hover { transform: scale(1.06); }
+        .pricing-card.featured .popular-badge {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: var(--secondary);
+            color: #fff;
+            padding: 8px 0;
+            font-size: 13px;
+            font-weight: 700;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+        .pricing-card.featured .pricing-header { padding-top: 56px; }
+
+        /* =========== TESTIMONIALS =========== */
+        .testimonials {
+            padding: 80px 0;
+            background: var(--primary);
+            color: #fff;
+        }
+        .testimonials .section-header h2 { color: #fff; }
+        .testimonials .section-header p { color: rgba(255,255,255,0.7); }
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+        .testimonial-card {
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: var(--radius);
+            padding: 28px;
+        }
+        .testimonial-card .stars {
+            color: var(--secondary);
+            font-size: 18px;
+            margin-bottom: 12px;
+        }
+        .testimonial-card blockquote {
+            font-size: 15px;
+            line-height: 1.7;
+            color: rgba(255,255,255,0.85);
+            font-style: italic;
+        }
+        .testimonial-card .author {
+            margin-top: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .testimonial-card .author-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: #fff;
+        }
+        .testimonial-card .author-avatar.a1 { background: var(--primary-light); }
+        .testimonial-card .author-avatar.a2 { background: var(--secondary); }
+        .testimonial-card .author-avatar.a3 { background: var(--success); }
+        .testimonial-card .author-info strong {
+            display: block;
+            font-size: 14px;
+        }
+        .testimonial-card .author-info span {
+            font-size: 13px;
+            color: rgba(255,255,255,0.6);
+        }
+
+        /* =========== CTA SECTION =========== */
+        .cta-section {
+            padding: 100px 0;
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.5;
+        }
+        .cta-section .container { position: relative; z-index: 1; }
+        .cta-section h2 {
+            font-size: 40px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 16px;
+        }
+        .cta-section p {
+            font-size: 18px;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 32px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* =========== CONTACT / DEMO FORM =========== */
+        .contact {
+            padding: 100px 0;
+            background: #fff;
+        }
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: start;
+        }
+        .contact-info h3 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+        .contact-info p {
+            font-size: 16px;
+            color: var(--text-light);
+            margin-bottom: 32px;
+        }
+        .contact-detail {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+        .contact-detail .icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: rgba(63, 106, 216, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+        .contact-detail .text strong { display: block; font-size: 15px; }
+        .contact-detail .text span { font-size: 14px; color: var(--text-light); }
+
+        .contact-form {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 40px;
+        }
+        .contact-form h3 {
+            font-size: 22px;
+            margin-bottom: 24px;
+        }
+        .form-group {
+            margin-bottom: 18px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--text-dark);
+            margin-bottom: 6px;
+        }
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 15px;
+            transition: var(--transition);
+            background: #fff;
+            color: var(--text-dark);
+        }
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-light);
+        }
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        .contact-form .btn { width: 100%; justify-content: center; }
+
+        /* =========== FOOTER =========== */
+        footer {
+            padding: 40px 0;
+            background: var(--primary-dark);
+            color: rgba(255,255,255,0.7);
+        }
+        footer .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        footer .logo { color: #fff; }
+        footer .logo .brand { color: #fff; }
+        footer .social-links { display: flex; gap: 16px; }
+        footer .social-links a {
+            color: rgba(255,255,255,0.6);
+            font-size: 20px;
+            transition: var(--transition);
+        }
+        footer .social-links a:hover { color: var(--secondary); }
+        footer .copyright { font-size: 14px; }
+
+
+        /* ===== MODAL / POPUP ===== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.65);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            backdrop-filter: blur(4px);
+        }
+        .modal-overlay.active { display: flex; }
+        .modal-window {
+            background: #fff;
+            border-radius: var(--radius);
+            width: 100%;
+            max-width: 1100px;
+            height: 85vh;
+            max-height: 700px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: modalIn 0.25s ease;
+            overflow: hidden;
+        }
+        @keyframes modalIn {
+            from { opacity: 0; transform: scale(0.95) translateY(10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+        .modal-header h3 {
+            font-size: 18px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .modal-header h3 span { color: var(--text-light); font-weight: 400; }
+        .modal-close {
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            border: none;
+            background: var(--bg);
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            color: var(--text);
+        }
+        .modal-close:hover { background: var(--danger); color: #fff; }
+        .modal-body {
+            flex: 1;
+            overflow: hidden;
+        }
+        .modal-body iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        @media(max-width:768px){
+            .modal-window { height: 95vh; max-height: none; border-radius: 8px; }
+            .modal-overlay { padding: 10px; }
+        }
+
+        /* =========== RESPONSIVE =========== */
+        @media (max-width: 1024px) {
+            .features-grid { grid-template-columns: repeat(2, 1fr); }
+            .pricing-grid { grid-template-columns: repeat(2, 1fr); }
+            .pricing-card.featured { transform: scale(1.02); }
+            .pricing-card.featured:hover { transform: scale(1.03); }
+            .dept-grid { grid-template-columns: repeat(4, 1fr); }
+        }
+        @media (max-width: 768px) {
+            .mobile-toggle { display: flex; }
+            .nav-links {
+                position: fixed;
+                top: 72px;
+                left: 0;
+                right: 0;
+                background: #fff;
+                flex-direction: column;
+                padding: 24px 20px;
+                gap: 16px;
+                border-bottom: 1px solid var(--border);
+                transform: translateY(-120%);
+                opacity: 0;
+                transition: var(--transition);
+                box-shadow: var(--shadow-lg);
+            }
+            .nav-links.active {
+                transform: translateY(0);
+                opacity: 1;
+            }
+            .hero { padding: 120px 0 60px; }
+            .hero .container {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            .hero-content h1 { font-size: 32px; }
+            .hero-content p { font-size: 16px; }
+            .hero-stats { grid-template-columns: repeat(3, 1fr); }
+            .hero-charts { grid-template-columns: 1fr 1fr; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+            .stat-item .number { font-size: 32px; }
+            .features-grid { grid-template-columns: 1fr; }
+            .section-header h2 { font-size: 28px; }
+            .dept-grid { grid-template-columns: repeat(2, 1fr); }
+            .pricing-grid { grid-template-columns: 1fr; }
+            .pricing-card.featured { transform: none; margin-top: 20px; }
+            .pricing-card.featured:hover { transform: none; }
+            .testimonial-grid { grid-template-columns: 1fr; }
+            .contact-grid { grid-template-columns: 1fr; gap: 30px; }
+            .cta-section h2 { font-size: 28px; }
+            footer .container { flex-direction: column; text-align: center; }
+        }
+        @media (max-width: 480px) {
+            .hero-content h1 { font-size: 26px; }
+            .hero-buttons { flex-direction: column; }
+            .hero-buttons .btn { width: 100%; justify-content: center; }
+            .hero-stats { grid-template-columns: repeat(2, 1fr); }
+            .hero-charts { grid-template-columns: 1fr; }
+            .stats-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
+            .dept-grid { grid-template-columns: repeat(2, 1fr); }
+            .contact-form { padding: 24px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============ NAVBAR ============ -->
+    <nav class="navbar" id="navbar">
+        <div class="container">
+            <a href="#" class="logo">
+                <div class="logo-icon">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+                <span class="brand">İşPusula</span><span class="dot">.</span>
+            </a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#ozellikler">Özellikler</a></li>
+                <li><a href="#fiyatlar">Fiyatlar</a></li>
+                <li><a href="#iletisim">İletişim</a></li>
+                <li><a href="#demo" class="btn btn-primary">Demo Talep Et</a></li>
+            </ul>
+            <button class="mobile-toggle" id="mobileToggle" aria-label="Menü">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- ============ HERO ============ -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>İş Takibini <span>Tek Platformda</span> Birleştirin</h1>
+                <p>Tekliften sevkiyata, 8 departmanınızla tüm iş süreçlerinizi tek ekranda yönetin. Ajansınız için özel tasarlandı.</p>
+                <div class="hero-buttons">
+                    <a href="#demo" class="btn btn-primary">🚀 Ücretsiz Dene</a>
+                    <a href="#ozellikler" class="btn btn-outline" style="border-color: rgba(255,255,255,0.4); color: #fff;">Özellikleri İncele</a>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="hero-card">
+                    <div class="hero-card-header">
+                        <h3>📊 Anlık Dashboard</h3>
+                        <span class="badge">CANLI</span>
+                    </div>
+                    <div class="hero-stats">
+                        <div class="hero-stat">
+                            <span class="number">24</span>
+                            <span class="label">Aktif İş Emri</span>
+                        </div>
+                        <div class="hero-stat">
+                            <span class="number">8</span>
+                            <span class="label">Departman</span>
+                        </div>
+                        <div class="hero-stat">
+                            <span class="number">₺45K</span>
+                            <span class="label">Haftalık Ciro</span>
+                        </div>
+                        <div class="hero-stat">
+                            <span class="number">%93</span>
+                            <span class="label">Memnuniyet</span>
+                        </div>
+                        <div class="hero-stat">
+                            <span class="number">12</span>
+                            <span class="label">Bekleyen İş</span>
+                        </div>
+                        <div class="hero-stat">
+                            <span class="number">3.2</span>
+                            <span class="label">Ort. Gün/Teslim</span>
+                        </div>
+                    </div>
+                    <div class="hero-charts">
+                        <div class="hero-chart">
+                            <div class="chart-title">Haftalık İş Dağılımı</div>
+                            <div class="bar-chart">
+                                <div class="bar b1" style="height:40%"></div>
+                                <div class="bar b2" style="height:65%"></div>
+                                <div class="bar b3" style="height:85%"></div>
+                                <div class="bar b4" style="height:50%"></div>
+                                <div class="bar b5" style="height:75%"></div>
+                            </div>
+                        </div>
+                        <div class="hero-chart">
+                            <div class="chart-title">Departman Yükü</div>
+                            <div class="donut-chart">
+                                <svg width="60" height="60" viewBox="0 0 36 36">
+                                    <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#3f6ad8" stroke-width="3" stroke-dasharray="40, 60"/>
+                                    <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#f5a623" stroke-width="3" stroke-dasharray="30, 70" stroke-dashoffset="-40"/>
+                                    <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#2ecc71" stroke-width="3" stroke-dasharray="20, 80" stroke-dashoffset="-70"/>
+                                    <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#9b59b6" stroke-width="3" stroke-dasharray="10, 90" stroke-dashoffset="-90"/>
+                                </svg>
+                                <div class="legend">
+                                    <div class="legend-item"><span class="dot" style="background:#3f6ad8"></span>Grafik</div>
+                                    <div class="legend-item"><span class="dot" style="background:#f5a623"></span>Matbaa</div>
+                                    <div class="legend-item"><span class="dot" style="background:#2ecc71"></span>Dijital</div>
+                                    <div class="legend-item"><span class="dot" style="background:#9b59b6"></span>Diğer</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hero-mini-chart">
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ STATS BANNER ============ -->
+    <section class="stats-banner">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span class="number">150+</span>
+                    <span class="label">Haftalık İş Emri</span>
+                </div>
+                <div class="stat-item">
+                    <span class="number">8</span>
+                    <span class="label">Farklı Departman</span>
+                </div>
+                <div class="stat-item">
+                    <span class="number">%40</span>
+                    <span class="label">Verimlilik Artışı</span>
+                </div>
+                <div class="stat-item">
+                    <span class="number">7/24</span>
+                    <span class="label">Teknik Destek</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ FEATURES ============ -->
+    <section class="features" id="ozellikler">
+        <div class="container">
+            <div class="section-header">
+                <h2>Ajansınız İçin <span class="highlight-blue">İhtiyacınız Olan</span> Her Şey</h2>
+                <p>Teklif oluşturmadan teslimata kadar <strong>tüm süreçlerinizi</strong> tek platformda yönetin. <span class="highlight-orange" style="font-weight:600;">12 güçlü modül</span> ile işleriniz hiç olmadığı kadar kolay.</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card c1">
+                    <div class="card-top">
+                        <div class="feature-icon">📄</div>
+                        <h3>Teklif Yönetimi</h3>
+                    </div>
+                    <div class="card-bottom">
+                        <p>Profesyonel PDF teklifler oluşturun, e-posta ile gönderin ve takip edin. Onaylanan teklifleri tek tıkla iş emrine dönüştürün.</p>
+                    </div>
+                </div>
+                <div class="feature-card c2">
+                    <div class="card-top">
+                        <div class="feature-icon">💰</div>
+                        <h3>Maliyet Hesabı</h3>
+                    </div>
+                    <div class="card-bottom">
+                        <p>Her iş emrinin maliyetini malzeme, işçilik ve genel gider kalemleriyle anlık hesaplayın. Kâr marjınızı kontrol edin.</p>
+                    </div>
+                </div>
+                <div class="feature-card c3">
+                    <div class="card-top">
+                        <div class="feature-icon">👥</div>
+                        <h3>Departman Yönetimi</h3>
+                    </div>
+                    <div class="card-bottom">
+                        <p>8 farklı departman tipiyle ajans yapınıza tam uyum. Her departman kendi iş yükünü görür, yöneticiler her şeyi takip eder.</p>
+                    </div>
+                </div>
+                <div class="feature-card c4">
+                    <div class="card-top">
+                        <div class="feature-icon">📊</div>
+                        <h3>Raporlar & Grafikler</h3>
+                    </div>
+                    <div class="card-bottom">
+                        <p>Chart.js ile görsel dashboard, DataTables ile detaylı listeler. İş yükü, ciro, departman performansı tek bakışta.</p>
+                    </div>
+                </div>
+                <div class="feature-card c5">
+                    <div class="card-top">
+                        <div class="feature-icon">🚚</div>
+                        <h3>Sevkiyat Takibi</h3>
+                    </div>
+                    <div class="card-bottom">
+                        <p>Kargo takip numarası ile gönderilerinizi izleyin, teslimat durumunu anlık görün. Müşterinize otomatik bilgilendirme gönderin.</p>
+                    </div>
+                </div>
+                <div class="feature-card c6">
+                    <div class="card-top">
+                        <div class="feature-icon">🔐</div>
+                        <h3>Yetkilendirme Sistemi</h3>
+                    </div>
+                    <div class="card-bottom">
+                        <p>Rol bazlı erişim kontrolü ile her kullanıcıya sadece görmesi gereken bilgileri gösterin. Admin, yönetici, personel rolleri.</p>
+                    </div>
+                </div>
+
+                <div class="feature-card c7">
+                    <div class="card-top">
+                        <div class="feature-icon">📊</div>
+                        <h3>Raporlama Sistemi</h3>
+                    </div>
+                    <div class="card-bottom">
+                        <p>Özelleştirilebilir grafik ve tablo raporları ile işletmenizin her alanını analiz edin. Excel/PDF dışa aktarım desteği.</p>
+                    </div>
+                </div>
+                <div class="feature-card c8">
+                    <div class="card-top">
+                        <div class="feature-icon">🔔</div>
+                        <h3>Bildirim Sistemi</h3>
+                    </div>
+                    <div class="card-bottom">
+                        <p>İş emri durum değişikliklerinde e-posta ve SMS ile anında bildirim. Kimse önemli bir gelişmeyi kaçırmasın.</p>
+                    </div>
+                </div>
+                <div class="feature-card c9">
+                    <div class="card-top">
+                        <div class="feature-icon">📅</div>
+                        <h3>Takvim Entegrasyonu</h3>
+                    </div>
+                    <div class="card-bottom">
+                        <p>Google Takvim ve Outlook ile senkronizasyon. Tüm iş emirleri ve teslim tarihleri takviminizde otomatik görünsün.</p>
+                    </div>
+                </div>
+                <div class="feature-card c10">
+                    <div class="card-top">
+                        <div class="feature-icon">📱</div>
+                        <h3>Mobil Uyum</h3>
+                    </div>
+                    <div class="card-bottom">
+                        <p>Tam responsive tasarım ile her cihazda kusursuz çalışma. Telefonunuzdan iş emri oluşturun, durum takibi yapın.</p>
+                    </div>
+                </div>
+                <div class="feature-card c11">
+                    <div class="card-top">
+                        <div class="feature-icon">💬</div>
+                        <h3>Destek / Ticket</h3>
+                    </div>
+                    <div class="card-bottom">
+                        <p>Müşteri destek taleplerini takip edin, departmanlara yönlendirin. Tüm geçmiş ve çözüm süreci tek bir ekranda.</p>
+                    </div>
+                </div>
+                <div class="feature-card c12">
+                    <div class="card-top">
+                        <div class="feature-icon">📝</div>
+                        <h3>Sözleşme Yönetimi</h3>
+                    </div>
+                    <div class="card-bottom">
+                        <p>Dijital sözleşme oluşturun, müşterilerinize imzaya gönderin. Sözleşme geçmişi ve yenileme hatırlatıcıları.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ DEPARTMENTS ============ -->
+    <section class="departments">
+        <div class="container">
+            <div class="section-header">
+                <h2><span class="highlight-blue">8 Departman</span>, Tek Platform</h2>
+                <p>İster matbaa, ister <span class="highlight-orange" style="font-weight:600;">dijital ajans</span> — departman yapınıza tam uyum sağlar.</p>
+            </div>
+            <div class="dept-grid">
+                <div class="dept-card">
+                    <div class="dept-icon">📋</div>
+                    <div class="dept-name">Muhasebe</div>
+                </div>
+                <div class="dept-card">
+                    <div class="dept-icon">💻</div>
+                    <div class="dept-name">Bilişim</div>
+                </div>
+                <div class="dept-card">
+                    <div class="dept-icon">📱</div>
+                    <div class="dept-name">Dijital</div>
+                </div>
+                <div class="dept-card">
+                    <div class="dept-icon">🎨</div>
+                    <div class="dept-name">Grafik</div>
+                </div>
+                <div class="dept-card">
+                    <div class="dept-icon">🖨️</div>
+                    <div class="dept-name">Matbaa</div>
+                </div>
+                <div class="dept-card">
+                    <div class="dept-icon">📢</div>
+                    <div class="dept-name">Pazarlama</div>
+                </div>
+                <div class="dept-card">
+                    <div class="dept-icon">🪧</div>
+                    <div class="dept-name">Tabela</div>
+                </div>
+                <div class="dept-card">
+                    <div class="dept-icon">📦</div>
+                    <div class="dept-name">Teslimat</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ PRICING ============ -->
+    <section class="pricing" id="fiyatlar">
+        <div class="container">
+            <div class="section-header">
+                <h2>İşletmenize Uygun <span class="highlight-orange">Plan</span> Seçin</h2>
+                <p>İhtiyacınıza göre seçin, istediğiniz zaman <strong>yükseltin</strong> veya düşürün. <span class="highlight-green" style="font-weight:600;">İlk 10 müşteriye özel fiyat!</span></p>
+            </div>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3 class="p-name-1">Başlangıç</h3>
+                        <p class="subtitle">Küçük ekipler için ideal</p>
+                    </div>
+                    <div class="price-row">
+                        <div class="price">₺999 <span>/ ay</span></div>
+                    </div>
+                    <ul class="features-list">
+                        <li>5 kullanıcı hesabı</li>
+                        <li>Temel modüller</li>
+                        <li>3 departman desteği</li>
+                        <li>E-posta bildirimleri</li>
+                        <li>E-posta desteği</li>
+                    </ul>
+                    <div class="pricing-footer">
+                        <a href="#demo" class="btn btn-outline">Başlangıç Paketi</a>
+                    </div>
+                </div>
+                <div class="pricing-card featured">
+                    <div class="popular-badge">🌟 EN POPÜLER</div>
+                    <div class="pricing-header">
+                        <h3 class="p-name-2">Profesyonel</h3>
+                        <p class="subtitle">Büyüyen ajanslar için</p>
+                    </div>
+                    <div class="price-row">
+                        <div class="price">₺2.499 <span>/ ay</span></div>
+                    </div>
+                    <ul class="features-list">
+                        <li>20 kullanıcı hesabı</li>
+                        <li>Tüm modüller</li>
+                        <li>8 departman desteği</li>
+                        <li>Gelişmiş raporlama</li>
+                        <li>Öncelikli destek</li>
+                        <li>API erişimi</li>
+                    </ul>
+                    <div class="pricing-footer">
+                        <a href="#demo" class="btn btn-primary">Profesyonel Paket</a>
+                    </div>
+                </div>
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3 class="p-name-3">Kurumsal</h3>
+                        <p class="subtitle">Özel çözümler için</p>
+                    </div>
+                    <div class="price-row">
+                        <div class="price">₺4.999 <span>/ ay</span></div>
+                    </div>
+                    <ul class="features-list">
+                        <li>Sınırsız kullanıcı</li>
+                        <li>Tüm modüller + özel</li>
+                        <li>Sınırsız departman</li>
+                        <li>Özel entegrasyonlar</li>
+                        <li>7/24 öncelikli destek</li>
+                        <li>Özel eğitim</li>
+                    </ul>
+                    <div class="pricing-footer">
+                        <a href="#iletisim" class="btn btn-outline">İletişime Geçin</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ TESTIMONIALS ============ -->
+    <section class="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <h2>Müşterilerimiz <span class="highlight-orange">Ne Diyor?</span></h2>
+                <p>İşPusula ile işlerini dijitalleştiren ajansların yorumları.</p>
+            </div>
+            <div class="testimonial-grid">
+                <div class="testimonial-card">
+                    <div class="stars">★★★★★</div>
+                    <blockquote>"İş emri takibinde yaşadığımız kaos tamamen bitti. Artık hangi departman ne yapıyor, anlık görebiliyoruz."</blockquote>
+                    <div class="author">
+                        <div class="author-avatar a1">A</div>
+                        <div class="author-info">
+                            <strong>Ahmet Yılmaz</strong>
+                            <span>Reklam Ajansı Sahibi</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="stars">★★★★★</div>
+                    <blockquote>"Tekliften teslimata kadar her şey tek platformda. Müşterilerime anında teklif gönderebilmek harika."</blockquote>
+                    <div class="author">
+                        <div class="author-avatar a2">Z</div>
+                        <div class="author-info">
+                            <strong>Zeynep Kaya</strong>
+                            <span>Matbaa İşletme Müdürü</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="stars">★★★★☆</div>
+                    <blockquote>"Maliyet takibi sayesinde hangi işten ne kadar kazandığımızı artık net görebiliyoruz. Kâr marjımız arttı."</blockquote>
+                    <div class="author">
+                        <div class="author-avatar a3">C</div>
+                        <div class="author-info">
+                            <strong>Can Demir</strong>
+                            <span>Dijital Ajans Kurucusu</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ CTA ============ -->
+    <section class="cta-section" id="demo">
+        <div class="container">
+            <h2>Hemen <span style="color:var(--secondary)">Ücretsiz</span> Deneyin</h2>
+            <p>15 dakikalık demo görüşmesi ile İşPusula'nın ajansınıza nasıl değer katacağını keşfedin.</p>
+            <a href="#iletisim" class="btn btn-white" style="font-size: 18px; padding: 16px 40px;">🚀 Demo Talep Et</a>
+        </div>
+    </section>
+
+    <!-- ============ CONTACT ============ -->
+    <section class="contact" id="iletisim">
+        <div class="container">
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <h3>Bizimle <span class="highlight-blue">İletişime</span> Geçin</h3>
+                    <p>Demo talep etmek, sorularınızı sormak veya özel bir teklif almak için bize ulaşın. <strong>24 saat içinde</strong> size dönüş yapıyoruz.</p>
+                    <div class="contact-detail">
+                        <div class="icon">📞</div>
+                        <div class="text">
+                            <strong>Telefon</strong>
+                            <span>0212 417 04 06</span>
+                        </div>
+                    </div>
+                    <div class="contact-detail">
+                        <div class="icon">✉️</div>
+                        <div class="text">
+                            <strong>E-posta</strong>
+                            <span>info@alacaajans.com</span>
+                        </div>
+                    </div>
+                    <div class="contact-detail">
+                        <div class="icon">📍</div>
+                        <div class="text">
+                            <strong>Adres</strong>
+                            <span>İstanbul, Türkiye</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-form">
+                    <h3>📝 <span class="highlight-orange">Demo</span> Talep Formu</h3>
+                    <form id="demoForm">
+                        <div class="form-group">
+                            <label>Adınız Soyadınız</label>
+                            <input type="text" placeholder="Adınız ve soyadınız" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Firma Adı</label>
+                            <input type="text" placeholder="Firma adı" required>
+                        </div>
+                        <div class="form-group">
+                            <label>E-posta Adresiniz</label>
+                            <input type="email" placeholder="ornek@firma.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Telefon Numaranız</label>
+                            <input type="tel" placeholder="05XX XXX XX XX">
+                        </div>
+                        <div class="form-group">
+                            <label>Kaç Kişilik Ekibiniz Var?</label>
+                            <select>
+                                <option>1-5 kişi</option>
+                                <option>6-20 kişi</option>
+                                <option>21-50 kişi</option>
+                                <option>50+ kişi</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Mesajınız (İsteğe bağlı)</label>
+                            <textarea placeholder="Eklemek istediğiniz bir şey var mı?"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">🚀 Demo Talep Et</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ MODAL (Demo Popup) ============ -->
+<div class="modal-overlay" id="modalOverlay">
+    <div class="modal-window">
+        <div class="modal-header">
+            <h3 id="modalTitle">📄 Modül Adı</h3>
+            <button class="modal-close" id="modalClose">✕</button>
+        </div>
+        <div class="modal-body">
+            <iframe id="modalIframe" src="" title="Demo"></iframe>
+        </div>
+    </div>
+</div>
+
+    <!-- ============ FOOTER ============ -->
+    <footer>
+        <div class="container">
+            <a href="#" class="logo">
+                <div class="logo-icon">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+                <span class="brand">İşPusula</span><span class="dot">.</span>
+            </a>
+            <div class="copyright">
+                © 2026 İşPusula — Alaca Ajans. Tüm hakları saklıdır.
+            </div>
+            <div class="social-links">
+                <a href="https://www.instagram.com/alacaajans/" target="_blank" title="Instagram">📷</a>
+                <a href="https://www.facebook.com/alacaajans" target="_blank" title="Facebook">👍</a>
+                <a href="https://twitter.com/alacaajans/" target="_blank" title="Twitter">🐦</a>
+                <a href="https://www.linkedin.com/" target="_blank" title="LinkedIn">💼</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const mobileToggle = document.getElementById('mobileToggle');
+        const navLinks = document.getElementById('navLinks');
+        
+        mobileToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // Close menu on link click
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+            });
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Navbar background on scroll
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.style.boxShadow = '0 2px 20px rgba(0,0,0,0.08)';
+            } else {
+                navbar.style.boxShadow = 'none';
+            }
+        });
+
+        // Form submission
+                document.getElementById('demoForm').addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    alert('✅ Demo talebiniz alındı! En kısa sürede size dönüş yapacağız. Teşekkür ederiz.');
+                    this.reset();
+                });
+
+                // ===== Modal / Demo Popup =====
+                const modalOverlay = document.getElementById('modalOverlay');
+                const modalIframe = document.getElementById('modalIframe');
+                const modalTitle = document.getElementById('modalTitle');
+                const modalClose = document.getElementById('modalClose');
+
+                const moduleMap = {'Teklif':'teklif','Maliyet':'maliyet','Departman':'departman','Raporlar':'raporlar','Sevkiyat':'sevkiyat','Yetkilendirme':'yetkilendirme','Raporlama':'raporlama','Bildirim':'bildirim','Takvim':'takvim','Mobil':'mobil','Destek':'destek','Sözleşme':'sozlesme'};
+                const deptMap = {'Muhasebe':'muhasebe','Bilişim':'bilisim','Dijital':'dijital','Grafik':'grafik','Matbaa':'matbaa','Pazarlama':'pazarlama','Tabela':'tabela','Teslimat':'teslimat'};
+
+                function openModal(title, hash){
+                    modalTitle.innerHTML = title + ' <span style="color:var(--text-light);font-weight:400">— Canlı Demo</span>';
+                    modalIframe.src = 'demo.html#' + hash;
+                    modalOverlay.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                }
+                function closeModal(){
+                    modalOverlay.classList.remove('active');
+                    modalIframe.src = '';
+                    document.body.style.overflow = '';
+                }
+                modalClose.addEventListener('click', closeModal);
+                modalOverlay.addEventListener('click', function(e){ if(e.target === this) closeModal(); });
+                document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeModal(); });
+
+                document.querySelectorAll('.feature-card').forEach(function(card){
+                    card.addEventListener('click', function(e){
+                        if(e.target.closest('a')) return;
+                        const h3 = this.querySelector('h3');
+                        if(!h3) return;
+                        const text = h3.textContent.trim();
+                        for(const [key, hash] of Object.entries(moduleMap)){
+                            if(text.includes(key)){
+                                const icon = this.querySelector('.feature-icon')?.textContent || '';
+                                openModal(icon + ' ' + text, hash);
+                                return;
+                            }
+                        }
+                    });
+                });
+                document.querySelectorAll('.dept-card').forEach(function(card){
+                    card.addEventListener('click', function(){
+                        const name = this.querySelector('.dept-name')?.textContent.trim();
+                        if(!name) return;
+                        const icon = this.querySelector('.dept-icon')?.textContent || '';
+                        for(const [key, hash] of Object.entries(deptMap)){
+                            if(name.includes(key)){
+                                openModal(icon + ' ' + name + ' Departmanı', hash);
+                                return;
+                            }
+                        }
+                    });
+                });
+    </script>
+</body>
+</html>
